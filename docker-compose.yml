@@ -9,6 +9,7 @@ services:
             - /srv/budgetflix:/media
         environment:
             - DB_PATH=/media/database/budgetflix.db
+            - SPRING_PROFILES_ACTIVE=prod
 
     worker:
         image: ghcr.io/budgetflix/budgetflix-worker:dev
