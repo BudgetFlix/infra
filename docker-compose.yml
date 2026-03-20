@@ -6,9 +6,9 @@ services:
         container_name: budgetflix-api
         restart: unless-stopped
         volumes:
-            - /srv/budgetflix:/media
+            - /srv/budgetflix:/budgetflix
         environment:
-            - DB_PATH=/media/database/budgetflix.db
+            - DB_PATH=/budgetflix/database/budgetflix.db
             - SPRING_PROFILES_ACTIVE=prod
 
     worker:
@@ -16,7 +16,7 @@ services:
         container_name: budgetflix-worker
         restart: unless-stopped
         volumes:
-            - /srv/budgetflix:/media
+            - /srv/budgetflix:/budgetflix
 
     nginx:
         image: nginx:latest
@@ -25,7 +25,7 @@ services:
         ports:
             - "80:80"
         volumes:
-            - /srv/budgetflix:/media
+            - /srv/budgetflix/media:/media
             - ./nginx/nginx.config:/etc/nginx/nginx.conf:ro
         depends_on:
             - api
