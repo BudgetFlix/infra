@@ -5,27 +5,70 @@ services:
         image: ghcr.io/budgetflix/budgetflix-api:dev
         container_name: budgetflix-api
         restart: unless-stopped
+
         volumes:
             - /srv/budgetflix:/budgetflix
+
         environment:
             - DB_PATH=/budgetflix/database/budgetflix.db
             - SPRING_PROFILES_ACTIVE=prod
+
+            # RabbitMQ
+            - SPRING_RABBITMQ_HOST=rabbitmq
+            - SPRING_RABBITMQ_PORT=5672
+            - SPRING_RABBITMQ_USERNAME=admin
+            - SPRING_RABBITMQ_PASSWORD=admin
+
+        depends_on:
+            - rabbitmq
 
     worker:
         image: ghcr.io/budgetflix/budgetflix-worker:dev
         container_name: budgetflix-worker
         restart: unless-stopped
+
         volumes:
             - /srv/budgetflix:/budgetflix
+
+        environment:
+            - SPRING_RABBITMQ_HOST=rabbitmq
+            - SPRING_RABBITMQ_PORT=5672
+            - SPRING_RABBITMQ_USERNAME=admin
+            - SPRING_RABBITMQ_PASSWORD=admin
+
+        depends_on:
+            - rabbitmq
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: budgetflix-rabbitmq
+        restart: unless-stopped
+
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+
+        environment:
+            - RABBITMQ_DEFAULT_USER=admin
+            - RABBITMQ_DEFAULT_PASS=admin
+
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq
 
     nginx:
         image: nginx:latest
         container_name: budgetflix-nginx
         restart: unless-stopped
+
         ports:
             - "80:80"
+
         volumes:
             - /srv/budgetflix/media:/media
             - ./nginx/nginx.config:/etc/nginx/nginx.conf:ro
+
         depends_on:
             - api
+
+volumes:
+    rabbitmq_data:
