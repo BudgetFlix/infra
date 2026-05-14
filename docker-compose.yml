@@ -31,10 +31,18 @@ services:
             - /srv/budgetflix:/budgetflix
 
         environment:
-            - SPRING_RABBITMQ_HOST=rabbitmq
-            - SPRING_RABBITMQ_PORT=5672
-            - SPRING_RABBITMQ_USERNAME=admin
-            - SPRING_RABBITMQ_PASSWORD=admin
+            - RABBITMQ_HOST=rabbitmq
+            - RABBITMQ_PORT=5672
+            - RABBITMQ_USERNAME=admin
+            - RABBITMQ_PASSWORD=admin
+            
+            - NEW_DIR=/budgetflix/media/inbox/new
+            - PROCESS_DIR=/budgetflix/media/inbox/process
+            - DONE_DIR=/budgetflix/media/inbox/done
+            - ERROR_DIR=/budgetflix/media/inbox/error
+            - ERROR_LOG=/budgetflix/media/inbox/error/errorLog.txt
+            - MOVIE_SOURCE=/budgetflix/media/library/movies
+            - SERIES_SOURCE=/budgetflix/media/library/series
 
         depends_on:
             - rabbitmq
