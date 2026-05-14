@@ -75,9 +75,8 @@ flowchart TD
         MQ[RabbitMQ]
         API[Gateway / API]
         WORKER[Workers]
-        UI[Frontend Apps]
-        DB[(Databases)]
     end
+        DB[(Databases)]
 
     DEV --> UI
     UI --> API
@@ -96,7 +95,7 @@ flowchart TD
 ![Docker Compose](https://img.shields.io/badge/Docker_Compose-2496ED?style=for-the-badge\&logo=docker\&logoColor=white)
 ![RabbitMQ](https://img.shields.io/badge/RabbitMQ-FF6600?style=for-the-badge\&logo=rabbitmq\&logoColor=white)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge\&logo=linux\&logoColor=black)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge\&logo=githubactions\&logoColor=white)
+
 
 </div>
 
@@ -159,21 +158,38 @@ Current and planned infrastructure services:
 
 # Development Workflow
 
-Typical local workflow:
+The infrastructure repository follows a centralized container workflow.
+
+Whenever changes are pushed to the `main` branch of a service repository:
+
+1. GitHub Actions automatically builds the Docker image
+2. The image is pushed to the container registry
+3. The infrastructure stack can pull the latest image
+4. Updated services are deployed through Docker Compose
 
 ```mermaid
 flowchart LR
 
     CODE[Code Changes]
-    BUILD[Docker Build]
-    START[Compose Up]
-    TEST[Test Services]
-    DEBUG[Logs & Monitoring]
+    PUSH[Push To Main]
+    ACTIONS[GitHub Actions]
+    BUILD[Docker Image Build]
+    REGISTRY[Container Registry]
+    INFRA[Infra Docker Compose]
+    DEPLOY[Updated Services]
 
-    CODE --> BUILD
-    BUILD --> START
-    START --> TEST
-    TEST --> DEBUG
+    CODE --> PUSH
+    PUSH --> ACTIONS
+    ACTIONS --> BUILD
+    BUILD --> REGISTRY
+    REGISTRY --> INFRA
+    INFRA --> DEPLOY
+```
+Typical deployment update:
+
+```bash
+docker compose pull
+docker compose up -d
 ```
 
 ---
