@@ -68,6 +68,7 @@ services:
 
         volumes:
             - rabbitmq_data:/var/lib/rabbitmq
+            - /rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
 
     nginx:
         image: nginx:latest

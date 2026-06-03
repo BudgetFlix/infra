@@ -1,0 +1,14 @@
+{
+  "queues": [
+    {
+      "name": "video.upload",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "video.upload.retry",
+      "vhost": "/",
+      "durable": true
+    }
+  ]
+}
