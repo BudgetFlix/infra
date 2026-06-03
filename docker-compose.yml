@@ -19,8 +19,8 @@ services:
             - SPRING_RABBITMQ_USERNAME=admin
             - SPRING_RABBITMQ_PASSWORD=admin
 
-            - VIDEO_UPLOAD_QUEUE=video.upload
-            - VIDEO_UPLOAD_RETRY_QUEUE=video.upload.retry
+            - QUEUES_UPLOAD=video.upload
+            - QUEUES_UPLOAD_RETRY=video.upload.retry
         
         depends_on:
             - rabbitmq
@@ -47,8 +47,8 @@ services:
             - MOVIE_SOURCE=/budgetflix/media/library/movies
             - SERIES_SOURCE=/budgetflix/media/library/series
 
-            - VIDEO_UPLOAD_QUEUE=video.upload
-            - VIDEO_UPLOAD_RETRY_QUEUE=video.upload.retry
+            - VIDEO_QUEUES_UPLOAD=video.upload
+            - VIDEO_QUEUES_UPLOAD_RETRY=video.upload.retry
 
         depends_on:
             - rabbitmq
