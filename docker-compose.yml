@@ -5,6 +5,9 @@ services:
         image: ghcr.io/budgetflix/budgetflix-api:dev
         container_name: budgetflix-api
         restart: unless-stopped
+        env_files:
+            - /opt/budgetflix/budgetflix.env
+
 
         volumes:
             - /srv/budgetflix:/budgetflix
